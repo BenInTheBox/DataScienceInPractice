@@ -13,11 +13,16 @@ def main():
     y = loyal_customers['tenure']
 
     # plots
-    plt.scatter(x.iloc[:500], y.iloc[:500], s=5)
-    plt.title('Scatter plot')
-    plt.xlabel('Total Charges')
-    plt.ylabel('Tenure')
-    plt.show()
+    #plt.scatter(x.iloc[:500], y.iloc[:500], s=5)
+    #plt.title('Scatter plot')
+    #plt.xlabel('Total Charges')
+    #plt.ylabel('Tenure')
+    #plt.show()
+
+    Fiber_optic_mean = np.mean(loyal_customers[loyal_customers["InternetService"] == "Fiber optic", 'tenure'])
+    print()
+
+
 
 
 main()
