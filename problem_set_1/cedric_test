@@ -1,3 +1,19 @@
-x=1
-y=2
-print(x+y)
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+def main():
+    data = pd.read_csv("customers.csv")
+    print(data.head())
+    print(data.columns)
+
+    # Takes only staying consumers
+    churn = data[data["Churn"] == "No"]
+    print(churn.head())
+
+
+#if __name__ == "__main__":
+#    main()
+
+
+plt.plot(data[:,2],data[:,1])
