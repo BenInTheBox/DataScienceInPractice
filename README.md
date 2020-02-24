@@ -6,7 +6,7 @@ git checkout -b NOM_BRANCHE
 git merge master  
 
 # Code
-Code
+Code  
 git checkout master
 git pull
 git checkout NOM_BRANCHE
