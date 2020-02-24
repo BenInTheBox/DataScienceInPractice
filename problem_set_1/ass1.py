@@ -9,7 +9,6 @@ def main():
     # Takes only staying consumers
     churn = data[data["Churn"] == "No"]
     print(churn.head())
-    print("Ta mere")
 
 if __name__ == "__main__":
     main()
