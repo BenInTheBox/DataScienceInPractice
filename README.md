@@ -1,6 +1,6 @@
 # Python
 # Setup
-Clone
+Clone  
 git clone https://github.com/BenInTheBox/DataScienceInPractice.git  
 git checkout -b NOM_BRANCHE  
 git merge master  
