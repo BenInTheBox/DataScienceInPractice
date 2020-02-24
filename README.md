@@ -15,3 +15,6 @@ git merge master
 Comme comme tu veux -> Commit
 
 git push
+
+# Install dependencies
+pip install -r requirements.txt
