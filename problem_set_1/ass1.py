@@ -10,5 +10,7 @@ def main():
     churn = data[data["Churn"] == "No"]
     print(churn.head())
 
+    print("bibaboum")
+
 if __name__ == "__main__":
     main()
