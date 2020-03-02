@@ -12,10 +12,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Loading Dataset
-data = pd.read_csv('/Users/yann/Downloads/customers.csv')
+data = pd.read_csv('customers.csv')
 
 # Cleaning Dataset to keep only active loyal members
-data_cleaned = data[data['Churn']=='Yes']
+data_cleaned = data[data['Churn'] == 'Yes']
 
 # See teh distribution of the tenure
 data_cleaned['tenure'].hist(bins=15)
@@ -25,12 +25,12 @@ plt.ylabel('Sum of clients')
 
 
 # Binning the data per loyalty 
-bins = np.array([0,10,45,data_cleaned['tenure'].max()])
+bins = np.array([0, 10, 45, data_cleaned['tenure'].max()])
 group_names = ['New', 'Loyal', 'Very Loyal']
 labels = pd.cut(data_cleaned['tenure'], bins, labels=group_names)
 
 # Grouping the data by labels and gender <---> you may want to change that 
-grouped = data_cleaned.groupby([labels,'gender'])
+grouped = data_cleaned.groupby([labels, 'gender'])
 Gender_loyalty = grouped.size().unstack()
 
 Gender_loyalty.plot.barh(title='Loyalty by gender')
@@ -39,12 +39,12 @@ Gender_loyalty.plot.barh(title='Loyalty by gender')
 # Getting all the services into one plot 
 # Normalize the services for their binary value 
 # Setting bool to int
-My_dict={'Yes':1,'No':0}
-data_cleaned['PhoneService_int']=data_cleaned['PhoneService'].map(My_dict)
+My_dict = {'Yes': 1, 'No': 0}
+data_cleaned['PhoneService_int'] = data_cleaned['PhoneService'].replace("Yes", 1).replace("No", 0)
 
 grouped2 = data_cleaned.groupby(labels)
 PhoneService_norm = grouped2['PhoneService_int'].sum()/grouped2.size()
-normed_infos = pd.DataFrame(PhoneService_norm,columns=['Has_PhoneService'])
+normed_infos = pd.DataFrame(PhoneService_norm, columns=['Has_PhoneService'])
 
 
 
