@@ -20,7 +20,7 @@ def main():
     #plt.show()
 
     Fiber_optic_mean = np.mean(loyal_customers[loyal_customers["InternetService"] == "Fiber optic", 'tenure'])
-    print()
+    print(loyal_customers[loyal_customers["InternetService"] == "Fiber optic", 'tenure'])
 
 
 
