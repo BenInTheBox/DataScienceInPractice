@@ -9,17 +9,10 @@ def main():
     print(data.head())
     print(data.columns)
 
-    # Takes only staying consumers
-    churn = data[data["Churn"] == "No"]
-    print(churn.head())
-
-    print("bibaboum ou")
-
     # Cleaning Dataset to keep only active loyal members
-    data_sorted = data[data['Churn'] == 'Yes']
-    print(data_sorted.head())
+    data_sorted = data[data['Churn'] == 'Yes'].reset_index()
 
-    # See teh distribution of the tenure
+    # See the distribution of the tenure
     data_sorted['tenure'].hist(bins=15)
     plt.title("Histogram of tenure")
     plt.xlabel('tenure')
@@ -27,14 +20,37 @@ def main():
     plt.show()
 
     # Binning the data per loyalty
-    bins = np.array([0, 10, 45, data_sorted['tenure'].max()])
+    threshold = data_sorted['tenure'].max()
+    bins = np.array([0, threshold/3, 2*threshold/3, threshold])
     group_names = ['New', 'Loyal', 'Very Loyal']
-    labels = pd.cut(data_sorted['tenure'], bins, labels=group_names)
+    data_sorted["Loyauty"] = pd.cut(data_sorted['tenure'], bins, labels=group_names)
+    distribution = [data_sorted["Loyauty"][data_sorted["Loyauty"] == status].count() for status in group_names]
+    x = np.arange(3)
+    plt.bar(x, distribution)
+    plt.xticks(x, group_names)
+    plt.ylabel("Total number")
+    plt.title("Loyauty count")
+    plt.show()
+
+    print("Loyauty distribution :\n")
+    total = sum(distribution)
+    for name, val in zip(group_names, distribution):
+        print(name+": "+str(val*100/total)+" %%")
+    print(data_sorted.head())
+
+    # Plot Tenure vs charges
+    data_sorted['MeanCharges'] = pd.to_numeric(data_sorted['TotalCharges'])/pd.to_numeric(data_sorted['tenure'])
+    x = pd.to_numeric(data_sorted['tenure']).to_numpy()
+    y = pd.to_numeric(data_sorted['MeanCharges']).to_numpy()
+    plt.scatter(x, y)
+    plt.xlabel('Tenure [Months]')
+    plt.ylabel('MeanCharges[$/Month]')
+    plt.title("Tenure Vs Mean Charges")
+    plt.show()
 
     # Grouping the data by labels and gender <---> you may want to change that
-    grouped = data_sorted.groupby([labels, 'gender'])
+    grouped = data_sorted.groupby([data_sorted["Loyauty"], 'gender'])
     gender_loyalty = grouped.size().unstack()
-
     gender_loyalty.plot.barh(title='Loyalty by gender')
     plt.show()
     # From this plot one can observe the distribution of clients within the loyalty classification made above
@@ -45,7 +61,7 @@ def main():
     my_dict = {'Yes': 1, 'No': 0}
     data_sorted['PhoneService_int'] = data_sorted['PhoneService'].map(my_dict)
 
-    grouped2 = data_sorted.groupby(labels)
+    grouped2 = data_sorted.groupby(data_sorted["Loyauty"])
     phone_service_norm = grouped2['PhoneService_int'].sum() / grouped2.size()
     normed_infos = pd.DataFrame(phone_service_norm, columns=['Has_PhoneService'])
 
@@ -99,7 +115,7 @@ def main():
 
     # money spent per loyalty
 
-    data_sorted['Labels'] = labels
+    data_sorted['Labels'] = data_sorted["Loyauty"]
     plt.figure()
     sns.barplot(x='Labels', y='MonthlyCharges', data=data_sorted)
     sns.set(style="whitegrid")
@@ -107,15 +123,13 @@ def main():
 
     # Do women spend more money ?
 
-    plt.figure()
     sns.catplot(x='Labels', y='MonthlyCharges', hue='gender', data=data_sorted)
     sns.set(style="whitegrid")
     plt.show()
 
     # Other representation
 
-    plt.figure()
-    sns.catplot(x='Labels', y='MonthlyCharges', hue='gender', kind="bar", data=data_cleaned)
+    sns.catplot(x='Labels', y='MonthlyCharges', hue='gender', kind="bar", data=data_sorted)
     sns.set(style="whitegrid")
     plt.show()
 
