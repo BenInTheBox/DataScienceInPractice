@@ -36,10 +36,9 @@ plt.ylabel('Sum of clients')
 
 
 # See the distribution of the tenure and monthly charge
-fig = plt.figure()
-sns.kdeplot(data_cleaned.tenure, data_cleaned.MonthlyCharges)
-sns.kdeplot(data_cleaned.tenure, data_cleaned.MonthlyCharges, cmap="Blues", shade=True)
-plt.title("Density plot of the tenure and the monthly charge")
+sns.jointplot(x=data_cleaned.tenure, y=data_cleaned.MonthlyCharges)
+sns.jointplot(x=data_cleaned.tenure, y=data_cleaned.MonthlyCharges, kind='kde')
+#plt.title("Density plot of the tenure and the monthly charge")
 
 
 # Binning the data per loyalty 
