@@ -11,13 +11,24 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Loading Dataset
+# Loading Dataset and get types information
 data = pd.read_csv('customers.csv')
+print(data.dtypes)
 
-# Cleaning Dataset to keep only active loyal members
+
+# Cleaning Dataset to keep only active members
 data_cleaned = data[data['Churn'] == 'Yes']
 
-# See teh distribution of the tenure
+
+# data statistical description
+numeric_data_description = data_cleaned.describe(include=['number'])
+print(numeric_data_description)
+
+object_data_description = data_cleaned.describe(include=['object'])
+print(object_data_description)
+
+
+# See the distribution of the tenure
 data_cleaned['tenure'].hist(bins=15)
 plt.title("Histogram of tenure")
 plt.xlabel('tenure')
@@ -29,11 +40,12 @@ bins = np.array([0, 10, 45, data_cleaned['tenure'].max()])
 group_names = ['New', 'Loyal', 'Very Loyal']
 labels = pd.cut(data_cleaned['tenure'], bins, labels=group_names)
 
-# Grouping the data by labels and gender <---> you may want to change that 
+# Grouping the data by labels and gender
 grouped = data_cleaned.groupby([labels, 'gender'])
 Gender_loyalty = grouped.size().unstack()
-
 Gender_loyalty.plot.barh(title='Loyalty by gender')
+print(Gender_loyalty)
+
 # From this plot one can observe the distribution of clients within the loyalty classification made above 
 
 # Getting all the services into one plot 
@@ -117,7 +129,7 @@ fig = plt.figure()
 sns.catplot(x='Labels', y='MonthlyCharges', hue='gender',kind="bar",data=data_cleaned)
 sns.set(style="whitegrid")
 
-
+plt.show()
 
 
 
