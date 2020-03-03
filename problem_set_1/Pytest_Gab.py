@@ -34,12 +34,12 @@ plt.title("Histogram of tenure")
 plt.xlabel('tenure')
 plt.ylabel('Sum of clients')
 
+
 # See the distribution of the tenure and monthly charge
 fig = plt.figure()
 sns.kdeplot(data_cleaned.tenure, data_cleaned.MonthlyCharges)
 sns.kdeplot(data_cleaned.tenure, data_cleaned.MonthlyCharges, cmap="Blues", shade=True)
 plt.title("Density plot of the tenure and the monthly charge")
-plt.show()
 
 
 # Binning the data per loyalty 
@@ -50,6 +50,7 @@ labels = pd.cut(data_cleaned['tenure'], bins, labels=group_names)
 # Grouping the data by labels and gender
 grouped = data_cleaned.groupby([labels, 'gender'])
 Gender_loyalty = grouped.size().unstack()
+fig = plt.figure()
 Gender_loyalty.plot.bar(title='Loyalty by gender')
 print(Gender_loyalty)
 
@@ -80,7 +81,6 @@ props = {
 }
 
 
-fig = plt.figure()
 ax = fig.add_subplot(1, 1, 1)
 ax.set(**props)
 ax.legend(loc='best')
@@ -115,23 +115,26 @@ ax.set(**props)
 ax.legend(loc='best')
 internet_services_df.plot.bar(ax=ax, rot=30)
 
-# money spent per loyalty
 
+# money spent per loyalty
 data_cleaned['Labels'] = labels
 fig = plt.figure()
 sns.barplot(x='Labels', y='MonthlyCharges', data=data_cleaned)
 sns.set(style="whitegrid")
 
-# Do women spend more money ?
 
-fig = plt.figure()
+# Other representation
+sns.catplot(x='Labels', y='MonthlyCharges', hue='gender', kind="bar", data=data_cleaned)
+sns.set(style="whitegrid")
+
+
+# Do men/women spend more money ?
 sns.catplot(x='Labels', y='MonthlyCharges', hue='gender', data=data_cleaned)
 sns.set(style="whitegrid")
 
-# Other representation 
 
-fig = plt.figure()
-sns.catplot(x='Labels', y='MonthlyCharges', hue='gender', kind="bar", data=data_cleaned)
+# does the method of payment affect the monthly charge of the customers
+sns.catplot(x='Labels', y='MonthlyCharges', hue='PaymentMethod', kind="bar", data=data_cleaned)
 sns.set(style="whitegrid")
 
 plt.show()
