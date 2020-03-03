@@ -86,6 +86,7 @@ ax.set(**props)
 ax.legend(loc='best')
 normed_infos.plot.bar(ax=ax, rot=30)
 
+
 # Analyze the internet services
 data_cleaned_with_internet = data_cleaned[data_cleaned['InternetService'] != 'No']
 labels2 = pd.cut(data_cleaned_with_internet['tenure'], bins, labels=group_names)
@@ -122,6 +123,10 @@ fig = plt.figure()
 sns.barplot(x='Labels', y='MonthlyCharges', data=data_cleaned)
 sns.set(style="whitegrid")
 
+# money spent as a function of loyalty and internet connection
+sns.catplot(x='Labels', y='MonthlyCharges', hue='InternetService', kind="bar", data=data_cleaned)
+sns.set(style="whitegrid")
+
 
 # Other representation
 sns.catplot(x='Labels', y='MonthlyCharges', hue='gender', kind="bar", data=data_cleaned)
@@ -136,5 +141,16 @@ sns.set(style="whitegrid")
 # does the method of payment affect the monthly charge of the customers
 sns.catplot(x='Labels', y='MonthlyCharges', hue='PaymentMethod', kind="bar", data=data_cleaned)
 sns.set(style="whitegrid")
+
+
+# the monthly charge versus the senior state
+sns.catplot(x='Labels', y='MonthlyCharges', hue='SeniorCitizen', kind="bar", data=data_cleaned)
+sns.set(style="whitegrid")
+
+
+
+
+
+
 
 plt.show()
