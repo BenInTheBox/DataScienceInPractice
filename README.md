@@ -7,10 +7,10 @@ git merge master
 
 # Code
 Code  
-git checkout master
-git pull
-git checkout NOM_BRANCHE
-git merge master
+git checkout master 
+git pull 
+git checkout NOM_BRANCHE 
+git merge master 
 
 Comme comme tu veux -> Commit
 
