@@ -4,14 +4,48 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
+from src import functions
+
+
 def main():
     data = pd.read_csv("customers.csv")
-    print(data.head())
-    print(data.columns)
 
     # Cleaning Dataset to keep only active loyal members
     data_sorted = data[data['Churn'] == 'Yes'].reset_index()
+    data_sorted.drop(columns="customerID", inplace=True)  # usless data
 
+    # Describe the dataset
+    functions.describe_dataset(data_sorted)
+
+    '''
+    We see that total charges is an object but it should be a float, so we check the min to spot empty value
+    '''
+    print("Total charges min: ", data_sorted["TotalCharges"].min())
+    data_sorted["TotalCharges"] = data_sorted["TotalCharges"].astype("float64")
+    print(data_sorted["SeniorCitizen"].head(10))  # Binary values => object
+    data_sorted["SeniorCitizen"] = data_sorted["SeniorCitizen"].astype("object")
+
+    '''
+    Mean charges are more relevant than monthly charges
+    '''
+    data_sorted["MeanMonthlyCharges"] = data_sorted["TotalCharges"]/data_sorted["tenure"]
+    functions.describe_dataset(data_sorted)
+
+    '''
+    Plot every object vs Mean charges
+    '''
+    functions.plot_float_vs_objects(data_sorted, "MeanMonthlyCharges")
+
+    '''
+    Distribution analysis
+    '''
+    functions.plot_distribution(data_sorted, "tenure")
+    functions.plot_distribution(data_sorted, "TotalCharges")
+    functions.plot_distribution(data_sorted, "MeanMonthlyCharges")
+
+    functions.plot_distribution_by(data_sorted, "tenure", "Contract")
+    functions.plot_distribution_by(data_sorted, "MeanMonthlyCharges", "Contract")
+    '''
     # See the distribution of the tenure
     data_sorted['tenure'].hist(bins=15)
     plt.title("Histogram of tenure")
@@ -131,7 +165,7 @@ def main():
 
     sns.catplot(x='Labels', y='MonthlyCharges', hue='gender', kind="bar", data=data_sorted)
     sns.set(style="whitegrid")
-    plt.show()
+    plt.show()'''
 
 
 if __name__ == "__main__":
