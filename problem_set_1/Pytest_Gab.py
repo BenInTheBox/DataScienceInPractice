@@ -34,6 +34,13 @@ plt.title("Histogram of tenure")
 plt.xlabel('tenure')
 plt.ylabel('Sum of clients')
 
+# See the distribution of the tenure and monthly charge
+fig = plt.figure()
+sns.kdeplot(data_cleaned.tenure, data_cleaned.MonthlyCharges)
+sns.kdeplot(data_cleaned.tenure, data_cleaned.MonthlyCharges, cmap="Blues", shade=True)
+plt.title("Density plot of the tenure and the monthly charge")
+plt.show()
+
 
 # Binning the data per loyalty 
 bins = np.array([0, 10, 45, data_cleaned['tenure'].max()])
