@@ -19,7 +19,7 @@ def main():
     In order to be able to work with our dataset, we must know its contents, size, columns, columns type and so on...
     '''
     functions.describe_dataset(data_sorted)
-
+ 
     '''
     We see that total charges is an object but it should be a float, so we check the min to spot empty value. 
     Then if every value is defined we can convert the column to float
