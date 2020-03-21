@@ -17,6 +17,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.metrics import precision_score, recall_score, confusion_matrix
 import scikitplot as skplt
+from sklearn.model_selection import train_test_split
 
 def result_analysis(y: np.ndarray, y_pred: np.ndarray): #Fonction Analyse de Précision, renvoi recall, précision et F-Score 
     
@@ -125,6 +126,9 @@ data_loyal = df_comp[df_comp['Churn'] == 1].reset_index()
 data_churn = df_comp[df_comp['Churn'] == 0].reset_index()
 
 #Définition RATIO d'entrainement et Définition des SETS ? Je suppose
+
+(data_loyal_train, data_loyal_test) = train_test_split(data_loyal,test_size = 0.8)
+(data_churn_train, data_churn_test) = train_test_split(data_churn, test_size = 0.8)
 
 per_train = 0.8
 n_row_loyal = data_loyal.shape[0]
